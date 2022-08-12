@@ -28,7 +28,8 @@ class ShowBookFragment : Fragment() {
     lateinit var db: BookDatabase
 
     companion object {
-        val list: ArrayList<ItemsItem?> = ArrayList<ItemsItem?>()
+        val listRandom: ArrayList<ItemsItem?> = ArrayList<ItemsItem?>()
+        val listTopicWise: ArrayList<ItemsItem?> = ArrayList<ItemsItem?>()
     }
 
     override fun onCreateView(
@@ -58,15 +59,15 @@ class ShowBookFragment : Fragment() {
         viewModel.getBooks("DSA")
         viewModel.getBookResponse.observe(viewLifecycleOwner) { showBookResponse ->
 
-            list.clear()
+            listRandom.clear()
             try {
-                list.addAll(showBookResponse?.items!!)
+                listRandom.addAll(showBookResponse?.items!!)
             } catch (e: NullPointerException) {
                 Log.d("chkStatus", "Item not fetched")
             }
-            if(list.isNotEmpty()) {
+            if(listRandom.isNotEmpty()) {
                 binding.pbUpper.visibility = View.GONE
-                bookAdapter.updateList(list)
+                bookAdapter.updateList(listRandom)
             }
         }
 
@@ -74,17 +75,17 @@ class ShowBookFragment : Fragment() {
         viewModel.getTopicWiseBooks("Networking")
         viewModel.getBookTopicResponse.observe(viewLifecycleOwner) { showBookResponse ->
 
-            list.clear()
+            listTopicWise.clear()
             try {
 
-                list.addAll(showBookResponse?.items!!)
-                Log.d("chkStatus", list.toString())
+                listTopicWise.addAll(showBookResponse?.items!!)
+                Log.d("chkStatus", listTopicWise.toString())
             } catch (e: NullPointerException) {
                 Log.d("chkStatus", "Item not fetched")
             }
-            if(list.isNotEmpty()) {
+            if(listTopicWise.isNotEmpty()) {
                 binding.pbLower.visibility = View.GONE
-                topicAdapter.updateList(list)
+                topicAdapter.updateList(listTopicWise)
             }
         }
 

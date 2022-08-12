@@ -44,17 +44,17 @@ class BookCategoryAdapter(
             viewModel.getTopicWiseBooks(holder.txtCategoryTopic.text.toString())
             viewModel.getBookTopicResponse.observe(lifecycleOwner) { showBookResponse ->
 
-                ShowBookFragment.list.clear()
+                ShowBookFragment.listTopicWise.clear()
                 try {
-                    ShowBookFragment.list.addAll(showBookResponse?.items!!)
+                    ShowBookFragment.listTopicWise.addAll(showBookResponse?.items!!)
                     Log.d("chkStatus", showBookResponse?.items!!.toString())
                 } catch (e: NullPointerException) {
                     Log.d("chkStatus", "Item not fetched")
                 }
 
-                if(ShowBookFragment.list.isNotEmpty()) {
+                if(ShowBookFragment.listTopicWise.isNotEmpty()) {
                     pbLower.visibility = View.GONE
-                    adapter.updateList(ShowBookFragment.list)
+                    adapter.updateList(ShowBookFragment.listTopicWise)
                 }
             }
         }

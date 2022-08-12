@@ -39,6 +39,7 @@ class ShowBookAdapter(private val context: Context,private val navController: Na
     private fun sendPosViaBundle(pos:Int):Bundle{
         val bundle = Bundle()
         bundle.putInt("pos",pos)
+        bundle.putString("type","random")
         return bundle
     }
 

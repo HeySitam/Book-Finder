@@ -38,6 +38,7 @@ class ShowTopicWiseBookAdapter(private val context: Context, private val navCont
     private fun sendPosViaBundle(pos:Int): Bundle {
         val bundle = Bundle()
         bundle.putInt("pos",pos)
+        bundle.putString("type","topicwise")
         return bundle
     }
 

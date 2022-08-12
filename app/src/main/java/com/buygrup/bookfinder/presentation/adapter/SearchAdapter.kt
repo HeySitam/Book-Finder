@@ -46,6 +46,7 @@ class SearchAdapter(private val context: Context, private val navController: Nav
         val bundle = Bundle()
         bundle.putInt("pos",pos)
         bundle.putBoolean("isSearch",true)
+        bundle.putString("type","search")
         return bundle
     }
 
