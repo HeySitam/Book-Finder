@@ -33,6 +33,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/poppins_medium"
         android:maxLines="1"
+        android:textColor="#828282"
         android:text="Codeless Data Structure and Algorithm"
         android:textStyle="bold" />
 </RelativeLayout>

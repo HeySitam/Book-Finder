@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.buygrup.bookfinder.R
 import com.buygrup.bookfinder.data.model.ItemsItem
 import com.buygrup.bookfinder.databinding.FragmentBookDetailBinding
+import com.buygrup.bookfinder.util.ConnectionLiveData
 
 class BookDetailFragment : Fragment() {
     lateinit var binding:FragmentBookDetailBinding
@@ -29,6 +30,37 @@ class BookDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ConnectionLiveData(requireContext()).observe(viewLifecycleOwner){ isAvailable ->
+            if(isAvailable){
+                binding.flIcons.visibility = View.VISIBLE
+                binding.imgBack.visibility = View.VISIBLE
+                binding.mcvBookImg.visibility = View.VISIBLE
+                binding.txtBookName.visibility = View.VISIBLE
+                binding.txtAuthors.visibility = View.VISIBLE
+                binding.llData.visibility = View.VISIBLE
+                binding.txtDesc.visibility = View.VISIBLE
+                binding.btnPreview.visibility = View.VISIBLE
+                binding.animationView.visibility = View.GONE
+                actionWhenNetworkAvailable()
+            } else {
+                binding.flIcons.visibility = View.GONE
+                binding.imgBack.visibility = View.GONE
+                binding.mcvBookImg.visibility = View.GONE
+                binding.txtBookName.visibility = View.GONE
+                binding.txtAuthors.visibility = View.GONE
+                binding.llData.visibility = View.GONE
+                binding.txtDesc.visibility = View.GONE
+                binding.btnPreview.visibility = View.GONE
+                binding.animationView.visibility = View.VISIBLE
+            }
+        }
+
+
+
+    }
+
+    private fun actionWhenNetworkAvailable(){
         val itemPosition:Int = arguments?.getInt("pos") ?: 0
         val itemType:String = arguments?.getString("type").toString()
         //var itemBook = ShowBookFragment.list[itemPosition]!!
@@ -45,11 +77,6 @@ class BookDetailFragment : Fragment() {
                 itemBook = ShowBookFragment.listTopicWise[itemPosition]!!
             }
         }
-//        val isNavigateFromSearch:Boolean = arguments?.getBoolean("isSearch") ?: false
-//
-//        if(isNavigateFromSearch){
-//
-//        }
 
         binding.imgBack.setOnClickListener {
             findNavController().popBackStack()
@@ -58,7 +85,7 @@ class BookDetailFragment : Fragment() {
         // loading image
         Glide.with(requireContext()).load(itemBook?.volumeInfo?.imageLinks?.thumbnail).into(binding.imgBook)
         binding.txtBookName.text = itemBook?.volumeInfo?.title
-        binding.txtAuthors.text = itemBook?.volumeInfo?.authors?.get(0)!!
+        binding.txtAuthors.text = itemBook?.volumeInfo?.authors?.get(0) ?: ""
         binding.txtPublishDate.text = itemBook?.volumeInfo!!.publishedDate?.substring(0,4) ?: ""
         binding.txtPages.text = itemBook?.volumeInfo!!.pageCount.toString()
         if(itemBook?.saleInfo?.isEbook!!){
@@ -73,6 +100,5 @@ class BookDetailFragment : Fragment() {
             val intent = Intent(Intent.ACTION_VIEW,uri)
             startActivity(intent)
         }
-
     }
 }

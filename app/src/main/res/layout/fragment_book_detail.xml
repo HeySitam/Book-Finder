@@ -10,12 +10,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".presentation.fragment.BookDetailFragment">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:background="@drawable/curved_blur_background" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/no_internet_anim" />
 
         <FrameLayout
             android:id="@+id/flIcons"
@@ -34,12 +45,6 @@
                 android:layout_marginStart="20dp"
                 android:src="@drawable/back_arrow" />
 
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center_vertical|end"
-                android:layout_marginEnd="20dp"
-                android:src="@drawable/bookmark_with_border" />
         </FrameLayout>
 
         <com.google.android.material.card.MaterialCardView
@@ -87,6 +92,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="Armstrong Subero"
             android:textAlignment="center"
+            android:textColor="#828282"
             android:textSize="12sp" />
 
         <LinearLayout
@@ -120,6 +126,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Published in"
+                    android:textColor="#828282"
                     android:textAlignment="center"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -156,6 +163,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Pages"
+                    android:textColor="#828282"
                     android:textAlignment="center"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -192,6 +200,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Ebook"
+                    android:textColor="#828282"
                     android:textAlignment="center"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -210,6 +219,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
+                android:textColor="#828282"
                 android:fontFamily="@font/poppins"
                 android:text="@string/dummy_book_desc"
                 android:textAlignment="center" />

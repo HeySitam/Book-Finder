@@ -10,23 +10,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".presentation.fragment.UserHomeFragment">
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationView"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="-50dp"
-            android:layout_marginTop="-50dp"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/wave_anim" />
+        <TextView
+            android:id="@+id/txtConnectionStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please check your Internet Connection!!"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="#5E5E5E"
+            android:textAlignment="center"
+            android:background="#C9C9C9"
+            android:padding="8dp"/>
 
         <LinearLayout
             android:id="@+id/llIcons"
             android:layout_width="wrap_content"
+            android:layout_below="@+id/txtConnectionStatus"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
@@ -34,25 +36,24 @@
 
             <ImageView
                 android:id="@+id/imgSearch"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
                 android:src="@drawable/search_icon" />
-
-            <TextView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/circular_textview_homepage"
-                android:gravity="center"
-                android:text="S"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
         </LinearLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true"
+            app:lottie_autoPlay="true"
+            android:visibility="gone"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/no_internet_anim" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -60,6 +61,7 @@
             android:background="@drawable/curved_blur_background" />
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/llIcons">

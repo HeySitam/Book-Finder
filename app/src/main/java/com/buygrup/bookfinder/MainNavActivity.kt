@@ -2,22 +2,27 @@ package com.buygrup.bookfinder
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.buygrup.bookfinder.data.db.BookDatabase
 import com.buygrup.bookfinder.data.repository.ShowBookRepository
+import com.buygrup.bookfinder.databinding.ActivityMainBinding
 import com.buygrup.bookfinder.presentation.viewModel.ShowBookViewModel
 import com.buygrup.bookfinder.presentation.viewModel.ShowBookViewModelFactory
+import com.buygrup.bookfinder.util.ConnectionLiveData
 
 class MainNavActivity : AppCompatActivity() {
+    lateinit var binding: ActivityMainBinding
     lateinit var viewModel: ShowBookViewModel
-    lateinit var db: BookDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        db = BookDatabase.getDatabase(this)
+
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+
         viewModel = ViewModelProvider(
             this,
-            ShowBookViewModelFactory(ShowBookRepository(db.categoryDao()))
+            ShowBookViewModelFactory(ShowBookRepository())
         ).get(ShowBookViewModel::class.java)
+
+
     }
 }

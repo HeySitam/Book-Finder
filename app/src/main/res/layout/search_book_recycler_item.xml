@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:strokeColor="#000068"
+        app:cardElevation="2dp"
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="15dp"
         app:strokeWidth="1dp">
 

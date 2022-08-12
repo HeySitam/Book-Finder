@@ -30,7 +30,7 @@ class ShowBookAdapter(private val context: Context,private val navController: Na
 
     override fun onBindViewHolder(holder: ShowBookViewHolder, position: Int) {
         holder.bookName.text = list[position]?.volumeInfo?.title ?: ""
-        Glide.with(context).load(list[position]?.volumeInfo?.imageLinks?.thumbnail!!).into(holder.imgBook)
+        Glide.with(context).load(list[position]?.volumeInfo?.imageLinks?.thumbnail ?: "").into(holder.imgBook)
         holder.rlBookItem.setOnClickListener {
             navController.navigate(R.id.action_showBookFragment_to_bookDetailFragment,sendPosViaBundle(position))
         }

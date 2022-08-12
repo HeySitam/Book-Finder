@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buygrup.bookfinder.R
-import com.buygrup.bookfinder.data.db.BookDatabase
 import com.buygrup.bookfinder.databinding.FragmentShowBookBinding
 import com.buygrup.bookfinder.data.model.ItemsItem
 import com.buygrup.bookfinder.data.repository.ShowBookRepository
@@ -20,12 +19,12 @@ import com.buygrup.bookfinder.presentation.adapter.ShowBookAdapter
 import com.buygrup.bookfinder.presentation.adapter.ShowTopicWiseBookAdapter
 import com.buygrup.bookfinder.presentation.viewModel.ShowBookViewModel
 import com.buygrup.bookfinder.presentation.viewModel.ShowBookViewModelFactory
+import com.buygrup.bookfinder.util.ConnectionLiveData
 import java.lang.NullPointerException
 
 class ShowBookFragment : Fragment() {
     lateinit var binding: FragmentShowBookBinding
     lateinit var viewModel: ShowBookViewModel
-    lateinit var db: BookDatabase
 
     companion object {
         val listRandom: ArrayList<ItemsItem?> = ArrayList<ItemsItem?>()
@@ -43,92 +42,101 @@ class ShowBookFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // creating the database instance
-        db = BookDatabase.getDatabase(requireContext())
         // Creating the View model instance
         viewModel = ViewModelProvider(
             requireActivity(),
-            ShowBookViewModelFactory(ShowBookRepository(db.categoryDao()))
+            ShowBookViewModelFactory(ShowBookRepository())
         ).get(ShowBookViewModel::class.java)
-        val bookAdapter = ShowBookAdapter(requireContext(), findNavController())
-        val topicAdapter = ShowTopicWiseBookAdapter(requireContext(), findNavController())
-        val categoryAdapter =
-            BookCategoryAdapter(requireContext(), viewModel, viewLifecycleOwner, topicAdapter,binding.pbLower)
-
-        // getting random books remotely
-        viewModel.getBooks("DSA")
-        viewModel.getBookResponse.observe(viewLifecycleOwner) { showBookResponse ->
-
-            listRandom.clear()
-            try {
-                listRandom.addAll(showBookResponse?.items!!)
-            } catch (e: NullPointerException) {
-                Log.d("chkStatus", "Item not fetched")
-            }
-            if(listRandom.isNotEmpty()) {
-                binding.pbUpper.visibility = View.GONE
-                bookAdapter.updateList(listRandom)
+        ConnectionLiveData(requireContext()).observe(viewLifecycleOwner){ isAvailable ->
+            if(isAvailable){
+                binding.scrollView.visibility = View.VISIBLE
+                binding.llIcons.visibility = View.VISIBLE
+                binding.txtConnectionStatus.visibility = View.GONE
+                binding.animationView.visibility = View.GONE
+               actionWhenNetworkAvailable()
+            } else {
+                binding.scrollView.visibility = View.GONE
+                binding.llIcons.visibility = View.GONE
+                binding.txtConnectionStatus.visibility = View.GONE
+                binding.animationView.visibility = View.VISIBLE
             }
         }
 
-        // getting 1st topic books remotely
-        viewModel.getTopicWiseBooks("Networking")
-        viewModel.getBookTopicResponse.observe(viewLifecycleOwner) { showBookResponse ->
-
-            listTopicWise.clear()
-            try {
-
-                listTopicWise.addAll(showBookResponse?.items!!)
-                Log.d("chkStatus", listTopicWise.toString())
-            } catch (e: NullPointerException) {
-                Log.d("chkStatus", "Item not fetched")
-            }
-            if(listTopicWise.isNotEmpty()) {
-                binding.pbLower.visibility = View.GONE
-                topicAdapter.updateList(listTopicWise)
-            }
-        }
-
-        // getting category locally
-//        viewModel.getCategories()
-//        viewModel.getCategory.observe(viewLifecycleOwner){ list ->
-//            categoryAdapter.updateList(list)
-//        }
-
-        categoryAdapter.updateList(
-            listOf(
-                "Networking",
-                "OS",
-                "C",
-                "C++",
-                "Java",
-                "Python",
-                "Android",
-                "Web Dev",
-                "DSA",
-                "Machine Learning"
-            )
-        )
-
-        binding.rvNewBooks.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = bookAdapter
-        }
-        binding.rvTopics.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = categoryAdapter
-        }
-        binding.rvTopicWiseBooks.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = topicAdapter
-        }
-
-        binding.imgSearch.setOnClickListener {
-            findNavController().navigate(R.id.action_showBookFragment_to_searchFragment)
-        }
     }
+     private fun actionWhenNetworkAvailable(){
+         val bookAdapter = ShowBookAdapter(requireContext(), findNavController())
+         val topicAdapter = ShowTopicWiseBookAdapter(requireContext(), findNavController())
+         val categoryAdapter =
+             BookCategoryAdapter(requireContext(), viewModel, viewLifecycleOwner, topicAdapter,binding.pbLower)
 
+         // getting random books remotely
+         viewModel.getBooks("DSA")
+         viewModel.getBookResponse.observe(viewLifecycleOwner) { showBookResponse ->
+
+             listRandom.clear()
+             try {
+                 listRandom.addAll(showBookResponse?.items!!)
+             } catch (e: NullPointerException) {
+                 Log.d("chkStatus", "Item not fetched")
+             }
+             if(listRandom.isNotEmpty()) {
+                 binding.pbUpper.visibility = View.GONE
+                 bookAdapter.updateList(listRandom)
+             }
+         }
+
+         // getting 1st topic books remotely
+         viewModel.getTopicWiseBooks("Networking")
+         viewModel.getBookTopicResponse.observe(viewLifecycleOwner) { showBookResponse ->
+
+             listTopicWise.clear()
+             try {
+
+                 listTopicWise.addAll(showBookResponse?.items!!)
+                 Log.d("chkStatus", listTopicWise.toString())
+             } catch (e: NullPointerException) {
+                 Log.d("chkStatus", "Item not fetched")
+             }
+             if(listTopicWise.isNotEmpty()) {
+                 binding.pbLower.visibility = View.GONE
+                 topicAdapter.updateList(listTopicWise)
+             }
+         }
+
+
+         categoryAdapter.updateList(
+             listOf(
+                 "Networking",
+                 "OS",
+                 "C",
+                 "C++",
+                 "Java",
+                 "Python",
+                 "Android",
+                 "Web Dev",
+                 "DSA",
+                 "Machine Learning"
+             )
+         )
+
+         binding.rvNewBooks.apply {
+             layoutManager =
+                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+             adapter = bookAdapter
+         }
+         binding.rvTopics.apply {
+             layoutManager =
+                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+             adapter = categoryAdapter
+         }
+         binding.rvTopicWiseBooks.apply {
+             layoutManager =
+                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+             adapter = topicAdapter
+         }
+
+         binding.imgSearch.setOnClickListener {
+             findNavController().navigate(R.id.action_showBookFragment_to_searchFragment)
+         }
+     }
 }

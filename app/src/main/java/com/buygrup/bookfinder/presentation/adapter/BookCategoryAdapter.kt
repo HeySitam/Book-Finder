@@ -7,10 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.buygrup.bookfinder.R
-import com.buygrup.bookfinder.data.model.BookCategory
 import com.buygrup.bookfinder.presentation.fragment.ShowBookFragment
 import com.buygrup.bookfinder.presentation.viewModel.ShowBookViewModel
 import java.lang.NullPointerException

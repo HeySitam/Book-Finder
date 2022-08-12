@@ -13,19 +13,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buygrup.bookfinder.R
-import com.buygrup.bookfinder.data.db.BookDatabase
 import com.buygrup.bookfinder.data.model.ItemsItem
 import com.buygrup.bookfinder.data.repository.ShowBookRepository
 import com.buygrup.bookfinder.databinding.FragmentSearchBinding
 import com.buygrup.bookfinder.presentation.adapter.SearchAdapter
 import com.buygrup.bookfinder.presentation.viewModel.ShowBookViewModel
 import com.buygrup.bookfinder.presentation.viewModel.ShowBookViewModelFactory
+import com.buygrup.bookfinder.util.ConnectionLiveData
 
 
 class SearchFragment : Fragment() {
     lateinit var binding: FragmentSearchBinding
     lateinit var viewModel: ShowBookViewModel
-    lateinit var db: BookDatabase
 
     companion object {
         val list: ArrayList<ItemsItem?> = ArrayList<ItemsItem?>()
@@ -42,13 +41,32 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        db = BookDatabase.getDatabase(requireContext())
         viewModel = ViewModelProvider(
             requireActivity(),
-            ShowBookViewModelFactory(ShowBookRepository(db.categoryDao()))
+            ShowBookViewModelFactory(ShowBookRepository())
         ).get(ShowBookViewModel::class.java)
 
+        ConnectionLiveData(requireContext()).observe(viewLifecycleOwner){ isAvailable ->
+            if(isAvailable){
+                binding.imgBack.visibility = View.VISIBLE
+                binding.llSearchBar.visibility = View.VISIBLE
+                binding.txtBookNo.visibility = View.VISIBLE
+                binding.rvSearch.visibility = View.VISIBLE
+                binding.animationView.visibility = View.GONE
+                actionWhenNetworkAvailable()
+            } else {
+                binding.imgBack.visibility = View.GONE
+                binding.llSearchBar.visibility = View.GONE
+                binding.txtBookNo.visibility = View.GONE
+                binding.rvSearch.visibility = View.GONE
+                binding.animationView.visibility = View.VISIBLE
+            }
+        }
+
+
+    }
+
+    private fun actionWhenNetworkAvailable(){
         binding.etSearch.requestFocus()
         val adapter = SearchAdapter(requireContext(), findNavController())
         binding.rvSearch.apply {
@@ -105,6 +123,5 @@ class SearchFragment : Fragment() {
                 }
             }
         })
-
     }
 }
