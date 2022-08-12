@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.fragment.UserHomeFragment">
+
+        <ImageView
+            android:id="@+id/imgHamburger"
+            android:layout_width="30dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:elevation="2dp"
+            android:src="@drawable/hamburger_icon" />
+
+        <LinearLayout
+            android:id="@+id/llIcons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp">
+
+            <ImageView
+                android:id="@+id/imgSearch"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/search_icon" />
+
+            <TextView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/circular_textview_homepage"
+                android:gravity="center"
+                android:text="S"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@drawable/curved_blur_background" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/llIcons">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/llText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="24dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Welcome !"
+                        android:textColor="#9D9D9D"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="What do you want to"
+                        android:textColor="#19191B"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="read today?"
+                        android:textColor="#19191B"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/v1"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_below="@id/llText"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/light_violet" />
+
+                <TextView
+                    android:id="@+id/txtNewBook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/v1"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="25dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Few Great Books"
+                    android:textColor="#19191B"
+                    android:textSize="18sp" />
+
+                <FrameLayout
+                    android:id="@+id/flUpper"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@id/txtNewBook"
+                    android:layout_height="250dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvNewBooks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/book_list_item" />
+
+                    <ProgressBar
+                        android:id="@+id/pbUpper"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTopics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/flUpper"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="25dp"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/book_category_list_item" />
+
+                <FrameLayout
+                    android:id="@+id/flLower"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/rvTopics"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="250dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvTopicWiseBooks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/book_list_item" />
+
+                    <ProgressBar
+                        android:id="@+id/pbLower"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        />
+                </FrameLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>
